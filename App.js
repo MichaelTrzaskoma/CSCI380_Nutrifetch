@@ -1,23 +1,36 @@
-import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import React, { useState, useEffect, Component } from "react";
+import { StyleSheet, Text, View, Button } from "react-native";
+import { AppRegistry } from "react-native";
+import "react-native-gesture-handler";
+import * as Google from "expo-google-app-auth";
 import { NavigationContainer } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { createStackNavigator } from "@react-navigation/stack";
 import { Ionicons } from "@expo/vector-icons";
 import FeatherIcon from "react-native-vector-icons/Feather";
 import MaterialCommunityIconsIcon from "react-native-vector-icons/MaterialCommunityIcons";
 
-import HomePanel from "./components/HomeScreen";
+import HomeScreen from "./components/HomeScreen";
 import SearchScreen from "./components/SearchScreen";
 import AccScreen from "./components/AccScreen";
-import ProfileInputScreen from "./components/ProfileInputScreen";
-import CameraScanScreen from "./components/CameraScanScreen";
 
-const Stack = createStackNavigator();
+import AllergyProfile from "./components/AllergyProfile";
+
 const Tab = createBottomTabNavigator();
+const Stack = createStackNavigator();
 
-function TabScreen({ usr_info }) {
-  // console.log("The props val: " + usr_info)
+function LoginPage(props) {
+  // init landing page for the Google Signin
+  return (
+    <View>
+      <Text style={styles.header}>Sign In With Your Credentials</Text>
+      <Button title="Sign in" onPress={() => props.signIn()} />
+    </View>
+  );
+}
+
+function TabScreens({ usr }) {
+  // console.log("Tab Screen Called: " + usr);
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
@@ -45,52 +58,96 @@ function TabScreen({ usr_info }) {
     >
       <Tab.Screen
         name="Home"
-        component={HomePanel}
         options={{ title: "Home Screen" }}
+        component={HomeScreen}
       />
       <Tab.Screen
         name="Search"
         component={SearchScreen}
         options={{ title: "Search Screen" }}
       />
-      <Tab.Screen
-        name="Account"
-        component={AccScreen}
-        options={{ title: "Account Screen" }}
-      />
+      <Tab.Screen name="Account" options={{ title: "Account Screen" }}>
+        {() => <AccScreen usr_info={usr} />}
+      </Tab.Screen>
     </Tab.Navigator>
   );
 }
 
-export default function App() {
-  return (
-    <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen
-          name="TabScreen"
-          component={TabScreen}
-          options={{ title: "Home Screen" }}
-        />
-        <Stack.Screen
-          name="ProfileInputScreen"
-          component={ProfileInputScreen}
-          options={{ title: "Allergy Input" }}
-        />
-        <Stack.Screen
-          name="CameraScanScreen"
-          component={CameraScanScreen}
-          options={{ title: "Camera Scanning" }}
-        />
-      </Stack.Navigator>
-    </NavigationContainer>
-  );
+export default class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      usrProfile: {
+        signedIn: false,
+        full_name: "",
+        last_name: "",
+        first_name: "",
+        email: "",
+        photoUrl: "",
+      },
+    };
+  }
+
+  signIn = async () => {
+    try {
+      const result = await Google.logInAsync({
+        androidClientId:
+          "117030962609-9mblopptuccmm9fqhi2uv7eeea9bk1vh.apps.googleusercontent.com",
+        // iosClientId: "<YOUR_CLIENT_ID_HERE>",
+        scopes: ["profile", "email"],
+      });
+
+      if (result.type === "success") {
+        this.setState({
+          usrProfile: {
+            signedIn: true,
+            full_name: result.user.name,
+            last_name: result.user.familyName,
+            first_name: result.user.givenName,
+            photoUrl: result.user.photoUrl,
+            email: result.user.email,
+          },
+        });
+      } else {
+        console.log("\nLog failed due to: \n", result);
+      }
+    } catch (e) {
+      console.log("\nError due to: \n", e);
+      // console.log(type(value));
+    }
+  };
+
+  render() {
+    if (this.state.usrProfile.signedIn) {
+      return (
+        <NavigationContainer>
+          <Stack.Navigator>
+            <Stack.Screen name={"Home"}>
+              {() => <TabScreens usr={this.state.usrProfile} />}
+            </Stack.Screen>
+            <Stack.Screen name={"AllergyProfile"} component={AllergyProfile} />
+          </Stack.Navigator>
+        </NavigationContainer>
+      );
+    } else {
+      return (
+        <View style={styles.container}>
+          <LoginPage signIn={this.signIn} />
+        </View>
+      );
+    }
+  }
 }
 
+// AppRegistry.registerComponent("App", () => App);
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
+  },
+  header: {
+    fontSize: 20,
   },
 });
