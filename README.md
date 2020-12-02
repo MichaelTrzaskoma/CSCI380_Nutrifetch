@@ -6,6 +6,11 @@ Contributors: Michael Trzaskoma, Gregory Salvesen, Zakaria Khan, and Hui (Henry)
 
 <br>
 
+## Demo
+* <a href="https://drive.google.com/file/d/1L2l0_u7QQGtK80Dw4m_auxPDGig-kHg4/view">Quick Demo</a>
+
+<br>
+
 ## Get start
  * install the required libraries<br>
   ```
