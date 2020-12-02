@@ -1,6 +1,6 @@
-import React, { useState, useEffect, Component } from "react";
+import React, { Component } from "react";
 import { StyleSheet, Text, View, Button } from "react-native";
-import { AppRegistry } from "react-native";
+// import { AppRegistry } from "react-native";
 import "react-native-gesture-handler";
 import * as Google from "expo-google-app-auth";
 import { NavigationContainer } from "@react-navigation/native";
@@ -15,6 +15,7 @@ import SearchScreen from "./components/SearchScreen";
 import AccScreen from "./components/AccScreen";
 
 import AllergyProfile from "./components/AllergyProfile";
+import CameraScanScreen from "./components/CameraScanScreen";
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -126,6 +127,7 @@ export default class App extends Component {
               {() => <TabScreens usr={this.state.usrProfile} />}
             </Stack.Screen>
             <Stack.Screen name={"AllergyProfile"} component={AllergyProfile} />
+            <Stack.Screen name={"CameraScanScreen"} component={CameraScanScreen} />
           </Stack.Navigator>
         </NavigationContainer>
       );
