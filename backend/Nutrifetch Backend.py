@@ -1,3 +1,17 @@
+#Firestore stuff
+import firebase_admin
+from firebase_admin import credentials
+from firebase_admin import firestore
+
+
+#Firestore initialization
+cred = credentials.Certificate("nutrifetchtest-firebase-adminsdk-ec3t6-e6a21b3a6f.json")
+firebase_admin.initialize_app(cred)
+db = firestore.client()
+user_ref =db.collection("Users")
+
+
+#Upc read 
 import urllib ,json
 from urllib.request import urlopen
 
@@ -133,5 +147,24 @@ def upcNutrition(upc):
     return productInformation
 
 ############################################################
-#Test of upcNutrition, should return string of information 
+#Test of upcNutrition, should return string of information
 print(upcNutrition(upc))
+
+
+#Need user fields for profile
+def userProfile(userEmail, userallergens = ''):
+
+    user_ref.document(userEmail).set({
+        u'Allergies' : userallergens 
+
+    })
+
+#Add a product to a history collection, need to figure naming of products logisitc
+def addProduct(userEmail, upc, productName, calories):
+
+    user_ref.document(userEmail).collection('History').document(upc).set({
+        u'Product' : productName,
+        u'Upc' : upc,
+        u'Calories' : calories
+
+    })
