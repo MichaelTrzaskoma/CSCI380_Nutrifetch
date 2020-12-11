@@ -3,6 +3,11 @@ import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import firestore
 
+#Upc read 
+import urllib ,json
+from urllib.request import urlopen
+
+from datetime import date
 
 #Firestore initialization
 cred = credentials.Certificate("nutrifetchtest-firebase-adminsdk-ec3t6-e6a21b3a6f.json")
@@ -11,9 +16,7 @@ db = firestore.client()
 user_ref =db.collection("Users")
 
 
-#Upc read 
-import urllib ,json
-from urllib.request import urlopen
+
 
 #upc = '044000032029'
 #upc = '044000000615'
@@ -151,20 +154,33 @@ def upcNutrition(upc):
 print(upcNutrition(upc))
 
 
-#Need user fields for profile
-def userProfile(userEmail, userallergens = ''):
+#fields for profile, email, name? fire and last?, age, sex, weight
+def userProfile(userEmail, nameF, nameL, sex, age, weight, userallergens = ''):
 
     user_ref.document(userEmail).set({
+        u'First Name' : nameF,
+        u'Last Name' : nameL,
+        u'Sex' : sex,
+        u'Age' : age,
+        u'Weight' : weight,
         u'Allergies' : userallergens 
 
     })
 
-#Add a product to a history collection, need to figure naming of products logisitc
+#Add a product to a history collection, need to logisitc food id, upc, date, expirey date, 
 def addProduct(userEmail, upc, productName, calories):
-
+    today = str(date.today().strftime('%m/%d/%Y'))
     user_ref.document(userEmail).collection('History').document(upc).set({
+        u'Scan Date' : today,
         u'Product' : productName,
         u'Upc' : upc,
-        u'Calories' : calories
+        u'Calories' : calories,
+        u'Expire Date' : ''
 
     })
+ 
+
+#Testing firestore inputs 
+#productInfo = upcNutrition(upc)
+#userProfile('mtrzask', 'Mike', 'Trz', 'male', 21, '150lbs')
+#addProduct('mtrzask', upc, productInfo[1], productInfo[3])
