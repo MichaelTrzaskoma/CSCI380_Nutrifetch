@@ -128,8 +128,11 @@ def upcNutrition(upc):
         field = nutritionFields[i]
         fieldStats = []
         fieldStats.append(field)
+        endStr = '_serving'
+        if field+endStr not in nutriRef:
+            endStr = ''
         if field in nutriRef:
-            num = nutriRef[field + '_serving'] 
+            num = nutriRef[field + endStr] 
             unit = nutriRef[field + '_unit']
             value = str(num) + str(unit)
             fieldStats.append(value)
