@@ -24,6 +24,7 @@ Contributors: Michael Trzaskoma, Gregory Salvesen, Zakaria Khan, and Hui (Henry)
     c. Use ```openssl rand -base64 32 | openssl sha1 -c``` to generate openssl key<br>
     d. Place "google-services.json" under android directory
   * Clear the Metro's cache: ```yarn start --reset-cache```
+  * AWS EC2 - SSH method: <a href="http://simp.ly/p/M2jgxM">here </a>
 
 <br>
 

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { StyleSheet, Text, View, Button } from "react-native";
-// import { AppRegistry } from "react-native";
+import { AppRegistry } from "react-native";
 import "react-native-gesture-handler";
 import * as Google from "expo-google-app-auth";
 import { NavigationContainer } from "@react-navigation/native";
@@ -73,7 +73,7 @@ function TabScreens({ usr }) {
     </Tab.Navigator>
   );
 }
-
+ 
 export default class App extends Component {
   constructor(props) {
     super(props);
@@ -95,7 +95,7 @@ export default class App extends Component {
         androidClientId:
           "117030962609-9mblopptuccmm9fqhi2uv7eeea9bk1vh.apps.googleusercontent.com",
         // iosClientId: "<YOUR_CLIENT_ID_HERE>",
-        scopes: ["profile", "email"],
+        // scopes: ["profile", "email"],
       });
 
       if (result.type === "success") {
@@ -141,7 +141,7 @@ export default class App extends Component {
   }
 }
 
-// AppRegistry.registerComponent("App", () => App);
+AppRegistry.registerComponent("App", () => App);
 const styles = StyleSheet.create({
   container: {
     flex: 1,
