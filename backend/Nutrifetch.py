@@ -1,25 +1,47 @@
+#Firestore stuff
+import firebase_admin
+from firebase_admin import credentials
+from firebase_admin import firestore
+
+#Upc read 
 import urllib ,json
 from urllib.request import urlopen
 
+<<<<<<< HEAD:backend/Nutrifetch.py
 upc = '044000032029'
 # upc = '044000000615'
 # upc = '688267000263'
+=======
+from datetime import date
+
+#Firestore initialization
+cred = credentials.Certificate("nutrifetchtest-firebase-adminsdk-ec3t6-e6a21b3a6f.json")
+firebase_admin.initialize_app(cred)
+db = firestore.client()
+user_ref =db.collection("Users")
+
+
+
+
+#upc = '044000032029'
+#upc = '044000000615'
+upc = '688267000263'
+>>>>>>> 0a6cbd7cc2ad04cc2b38e44a07266b51bbd2f62d:backend/Nutrifetch Backend.py
 
 
 #Dictionary for daily values, current numbers as place holders, not actual values
 dailyVal = {
-    'fat' : 1,
-    'saturated-fat' : 2,
-    'cholesterol' : 3,
-    'sodium': 4,
-    'carbohydrates' : 5,
-    'fiber' : 6,
-    'vitamin-d' : 7,
-    'calcium' : 8,
-    'iron' : 9,
-    'potassium' : 10, 
+    'fat' : 78,
+    'saturated-fat' : 20,
+    'cholesterol' : 300,
+    'sodium': 2300,
+    'carbohydrates' : 275,
+    'fiber' : 28,
+    'vitamin-d' : 20,
+    'calcium' : 1300,
+    'iron' : 18,
+    'potassium' : 4700, 
 }
-
 
 
 #Checks if the upc exists or not
@@ -83,7 +105,7 @@ def upcNutrition(upc):
     nutriRef = genProductDict['nutriments']
     
     #Calories
-    productInformation.append(nutriRef['energy-kcal'])
+    productInformation.append(nutriRef['energy-kcal_serving'])
 
     #Current nutrients list
     nutritionFields = ['fat', 
@@ -111,19 +133,32 @@ def upcNutrition(upc):
         field = nutritionFields[i]
         fieldStats = []
         fieldStats.append(field)
+        endStr = '_serving'
+        
+        #Check if there's a per serving
+        if field+endStr not in nutriRef:
+            endStr = ''
+            
+        #Check if field exists in json   
         if field in nutriRef:
-            num = nutriRef[field + '_serving'] 
+            num = nutriRef[field + endStr] 
             unit = nutriRef[field + '_unit']
-            value = str(num) + str(unit)
+            
+            #Modify to represent in terms of mg
+            if unit == 'mg':
+                num *= 1000
+            value = str(round(num,2)) + str(unit)
             fieldStats.append(value)
+            
+            #Check for daily value
             if field in noDaily:
                 percent = ''
             else:
-                percent = (float(num)/dailyVal[field])*100
+                percent = round(((float(num)/dailyVal[field])*100),2)
                 percent = str(percent) + '%'
             fieldStats.append(percent)
             productInformation.append(fieldStats)
-
+            
         else:
             fieldStats.append('')
             fieldStats.append('')
@@ -132,10 +167,44 @@ def upcNutrition(upc):
 
     return productInformation
 
-############################################################
 #Test of upcNutrition, should return string of information 
 # print(upcNutrition(upc))
 
 # test output
 for item in upcNutrition(upc):
     print("%s \n==" % item)
+
+#Test of upcNutrition, should return string of information
+print(upcNutrition(upc))
+
+
+#fields for profile, email, name? fire and last?, age, sex, weight
+def userProfile(userEmail, nameF, nameL, sex, age, weight, userallergens = ''):
+
+    user_ref.document(userEmail).set({
+        u'First Name' : nameF,
+        u'Last Name' : nameL,
+        u'Sex' : sex,
+        u'Age' : age,
+        u'Weight' : weight,
+        u'Allergies' : userallergens 
+
+    })
+
+#Add a product to a history collection, need to logisitc food id, upc, date, expirey date, 
+def addProduct(userEmail, upc, productName, calories):
+    today = str(date.today().strftime('%m/%d/%Y'))
+    user_ref.document(userEmail).collection('History').document(upc).set({
+        u'Scan Date' : today,
+        u'Product' : productName,
+        u'Upc' : upc,
+        u'Calories' : calories,
+        u'Expire Date' : ''
+
+    })
+ 
+
+#Testing firestore inputs 
+#productInfo = upcNutrition(upc)
+#userProfile('mtrzask', 'Mike', 'Trz', 'male', 21, '150lbs')
+#addProduct('mtrzask', upc, productInfo[1], productInfo[3])

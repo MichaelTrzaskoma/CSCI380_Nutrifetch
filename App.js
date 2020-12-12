@@ -143,7 +143,7 @@ export default class App extends Component {
   };
 
   render() {
-    this.recall();
+    // this.recall();
     if (this.state.usrProfile.signedIn) {
       return (
         <NavigationContainer>
