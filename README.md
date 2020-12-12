@@ -28,23 +28,29 @@ Contributors: Michael Trzaskoma, Gregory Salvesen, Zakaria Khan, and Hui (Henry)
 
 <br>
 
-  ## Run the app
+## Run the app
+Backend
   ```
-  cd <directory of your project>
-  expo start
-  # OR 
-  npm start 
-  # OR 
-  npm run android 
-  ```
-
-  - If on android simulator:
-  ```npm run android```
-
-  - If on ios simulator:
-  ```npm run ios```
-
-  - If on web:
-  ```npm run web```
+  # install dependency
+  pip3 install -r requirements.txt
   
-  <br>
+  # add flask app to the environment variable/ path
+  export FLASK_APP=flask_app.py
+
+  # run the flask with port 8080 publically
+  flask run --host=0.0.0.0 --port=8080
+
+  # activate environement for debugging
+  source csci426/bin/activate
+  ```
+
+React Native
+```
+cd <directory of your project>
+npm install
+npm start
+# or 
+npm run android
+# or 
+expo start
+```

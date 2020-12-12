@@ -1,9 +1,11 @@
 from flask import Flask
 from flask import request, jsonify
+
+# import the things that Michael has coded
 from Nutrifetch import *
 
 app = Flask(__name__)
-# app.config["DEBUG"] = True
+app.config["DEBUG"] = True
 
 allergy_profile = {
     'Email': "",
@@ -32,14 +34,20 @@ def getUPCinfo():
     # INPUT: UPC code and user email
     # OUTPUT: food nutrition info and food allergy status
     response = ""
+
     # check if the upc and email is in the URL
     if 'upc' in request.args and 'email' in request.args:
         upc = request.args['upc']
         email = request.args['email']
+
+        nutrition = upcNutrition(upc)
+        # allergy_status = 
+        response = jsonify(nutrition)
         response.status_code = 202
     else:
-        response = "Error due to AX002"
+        response = "Error code: AX002"
         response.status_code = 500
+
     return response
 
 
