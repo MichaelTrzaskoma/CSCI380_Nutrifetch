@@ -14,8 +14,9 @@ import HomeScreen from "./components/HomeScreen";
 import SearchScreen from "./components/SearchScreen";
 import AccScreen from "./components/AccScreen";
 
-import AllergyProfile from "./components/AllergyProfile";
+import AllergyProfile from "./components/AllergyProfileInput";
 import CameraScanScreen from "./components/CameraScanScreen";
+import AfterUPCscanned from "./components/AfterUPCscanned";
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -144,7 +145,7 @@ export default class App extends Component {
 
   render() {
     // this.recall();
-    if (this.state.usrProfile.signedIn) {
+    // if (this.state.usrProfile.signedIn) {
       return (
         <NavigationContainer>
           <Stack.Navigator>
@@ -156,16 +157,20 @@ export default class App extends Component {
               name={"CameraScanScreen"}
               component={CameraScanScreen}
             />
+            <Stack.Screen
+              name={"AfterUPCscanned"}
+              component={AfterUPCscanned}
+            />
           </Stack.Navigator>
         </NavigationContainer>
       );
-    } else {
-      return (
-        <View style={styles.container}>
-          <LoginPage signIn={this.signIn} />
-        </View>
-      );
-    }
+    // } else {
+    //   return (
+    //     <View style={styles.container}>
+    //       <LoginPage signIn={this.signIn} />
+    //     </View>
+    //   );
+    // }
   }
 }
 

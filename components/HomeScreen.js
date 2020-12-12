@@ -9,13 +9,14 @@ import {
 import MaterialCommunityIconsIcon from "react-native-vector-icons/MaterialCommunityIcons";
 import IoniconsIcon from "react-native-vector-icons/Ionicons";
 import CameraScanScreen from "./CameraScanScreen";
+import AfterUPCscanned from "./AfterUPCscanned";
 
 export default function HomeScreen({navigation}) {
   return (
     <View style={styles.container}>
       <StatusBar hidden />
       <TouchableOpacity
-        onPress={() => navigation.navigate(CameraScanScreen)}
+        onPress={() => navigation.navigate('AfterUPCscanned')}
         style={styles.button}
       >
         <View style={styles.iconRow}>

@@ -5,7 +5,7 @@ import MaterialIconsIcon from "react-native-vector-icons/MaterialIcons";
 import "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
 
-import AllergyProfile from "../AllergyProfile";
+import AllergyProfile from "../AllergyProfileInput";
 
 export default function AddAllergy() {
   const navigation = useNavigation();
