@@ -171,7 +171,7 @@ for item in upcNutrition(upc):
 
 #fields for profile, email, name? fire and last?, age, sex, weight
 def userProfile(userEmail, nameF, nameL, sex, age, weight, userallergens = ''):
-
+    [x.lower() for x in userallergens]
     user_ref.document(userEmail).set({
         u'First Name' : nameF,
         u'Last Name' : nameL,
