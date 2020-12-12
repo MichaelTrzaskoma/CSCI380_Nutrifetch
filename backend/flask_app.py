@@ -32,9 +32,10 @@ def getUPCinfo():
     # INPUT: UPC code and user email
     # OUTPUT: food nutrition info and food allergy status
     response = ""
-    # check if the email is in the URL
-    if 'email' in request.args:
-        email = int(request.args['email'])
+    # check if the upc and email is in the URL
+    if 'upc' in request.args and 'email' in request.args:
+        upc = request.args['upc']
+        email = request.args['email']
         response.status_code = 202
     else:
         response = "Error due to AX002"
