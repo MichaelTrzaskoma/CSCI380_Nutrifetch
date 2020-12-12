@@ -195,6 +195,24 @@ def addProduct(userEmail, upc, productName, calories):
     })
  
 
+#Checks to see if the user is allergic, or if user has profile yet
+#Input, product upc, email
+#Output, one of the 3 strings vals 
+# 2 = user profile doesnt exist
+# 1 = allergen exists in product
+# 0 = allergen doesn't exist in product
+def allergyCheck(upc, email):
+    userProfile = user_ref.document(email).get()
+    if userProfile.exists == False:
+        return '2'
+    nutritionInfo = upcNutrition(upc)
+    allergensStr = nutritionInfo[2]
+    allergensList = allergensStr.split(', ')
+    userAllergies = userProfile.to_dict().get('Allergies')
+    for i in range(len(userAllergies)):
+        if userAllergies[i] in allergensList:
+            return '1'
+    return '0'
 #Testing firestore inputs 
 #productInfo = upcNutrition(upc)
 #userProfile('mtrzask', 'Mike', 'Trz', 'male', 21, '150lbs')
