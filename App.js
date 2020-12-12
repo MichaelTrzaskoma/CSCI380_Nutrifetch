@@ -73,7 +73,7 @@ function TabScreens({ usr }) {
     </Tab.Navigator>
   );
 }
- 
+
 export default class App extends Component {
   constructor(props) {
     super(props);
@@ -86,6 +86,9 @@ export default class App extends Component {
         email: "",
         photoUrl: "",
       },
+      upcPlaceholder: "6 79948 10006 8",
+      productNamePlaceholder: "Nature's Earthly Choice Organic Lentil Trio",
+      safePnamePlaceholder: "Nature\'s Earthly Choice Organic Lentil Trio",
     };
   }
 
@@ -118,7 +121,29 @@ export default class App extends Component {
     }
   };
 
+  recall = () => {
+    let URL = "https://api.fda.gov/food/enforcement.json?api_key=ioNI0UpkgYZ0KxjlPukkrx4rf9wkYYPTqNMnYQA7&search=openfda.upc.exact: "
+    + this.state.upcPlaceholder + " +AND+product_description: \""  +
+    this.state.safePnamePlaceholder +
+    '" &limit=1000';
+
+    fetch(URL, {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    }).then((response) => response.json())
+    .then((json) => {
+      console.log(json);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+  };
+
   render() {
+    this.recall();
     if (this.state.usrProfile.signedIn) {
       return (
         <NavigationContainer>
@@ -127,7 +152,10 @@ export default class App extends Component {
               {() => <TabScreens usr={this.state.usrProfile} />}
             </Stack.Screen>
             <Stack.Screen name={"AllergyProfile"} component={AllergyProfile} />
-            <Stack.Screen name={"CameraScanScreen"} component={CameraScanScreen} />
+            <Stack.Screen
+              name={"CameraScanScreen"}
+              component={CameraScanScreen}
+            />
           </Stack.Navigator>
         </NavigationContainer>
       );

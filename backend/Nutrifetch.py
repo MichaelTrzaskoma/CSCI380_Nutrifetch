@@ -1,9 +1,9 @@
 import urllib ,json
 from urllib.request import urlopen
 
-#upc = '044000032029'
-#upc = '044000000615'
-upc = '688267000263'
+upc = '044000032029'
+# upc = '044000000615'
+# upc = '688267000263'
 
 
 #Dictionary for daily values, current numbers as place holders, not actual values
@@ -134,4 +134,8 @@ def upcNutrition(upc):
 
 ############################################################
 #Test of upcNutrition, should return string of information 
-print(upcNutrition(upc))
+# print(upcNutrition(upc))
+
+# test output
+for item in upcNutrition(upc):
+    print("%s \n==" % item)

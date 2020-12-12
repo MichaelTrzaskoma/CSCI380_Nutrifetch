@@ -1,75 +1,45 @@
 import { StatusBar } from "expo-status-bar";
-import React, { useEffect, useState } from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  ActivityIndicator,
-  FlatList,
-} from "react-native";
-import Navigator from "./routes/homeStack";
-import "react-native-gesture-handler";
+import React from "react";
+import { Button, StyleSheet, Text, View, FlatList } from "react-native";
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
 
-const getRecallFromApi = async () => {
-  let upcPlaceholder = "6 79948 10006 8";
-  let productNamePlaceholder = "Nature's Earthly Choice Organic Lentil Trio";
-  let manufacturedurl =
-    "https://api.fda.gov/drug/event.json?api_key=ioNI0UpkgYZ0KxjlPukkrx4rf9wkYYPTqNMnYQA7&search=openfda.upc.exact: " +
-    upcPlaceholder +
-    " +AND+product_description: " +
-    productNamePlaceholder +
-    " &limit=1000";
-  try {
-    let response = await fetch(manufacturedurl);
-    let json = await response.json();
-    return json.movies;
-    // console.log(json.movies);
-  } catch (error) {
-    console.error(error);
+export default class FDAcall extends React.Component {
+  constructor() {
+    super();
+    this.state({
+      upcPlaceholder: "6 79948 10006 8",
+      productNamePlaceholder: "Nature's Earthly Choice Organic Lentil Trio",
+      safePnamePlaceholder: "Nature's Earthly Choice Organic Lentil Trio",
+    });
   }
-};
 
-export default function App() {
-  const [isLoading, setLoading] = useState(true);
-  const [data, setData] = useState([]);
-  const upcPlaceholder = "6 79948 10006 8";
-  const productNamePlaceholder = "Nature's Earthly Choice Organic Lentil Trio";
-  const manufacturedurl =
-    "https://api.fda.gov/drug/event.json?api_key=ioNI0UpkgYZ0KxjlPukkrx4rf9wkYYPTqNMnYQA7&search=openfda.upc.exact: " +
-    upcPlaceholder +
-    " +AND+product_description: " +
-    productNamePlaceholder +
-    " &limit=1000";
+  componentDidMount() {
+    this.apiCall();
+  }
 
-  useEffect(() => {
-    fetch(manufacturedurl)
-      .then((response) => response.json())
-      .then((json) => setData(json.results))
-      .catch((error) => console.error(error))
-      .finally(() => setLoading(false));
-  }, []);
+  apiCall() {
+    //Below is Working Querry
+    //let resp = await fetch('https://api.fda.gov/food/enforcement.json?search=openfda.upc.exact: 6 79948 10006 8 +AND+product_description:"Nature\'s Earthly Choice Organic Lentil Trio"  &limit=1000')
+    //Below is Non-WorkingQuerry
+    let manufacturedurl =
+        "https://api.fda.gov/food/enforcement.json?api_key=ioNI0UpkgYZ0KxjlPukkrx4rf9wkYYPTqNMnYQA7&search=openfda.upc.exact: " + this.state.upcPlaceholder +
+        ' +AND+product_description: "' +
+        this.state.safePnamePlaceholder +
+        '" &limit=1000';
 
-  return (
-    // <Navigator/>);
-    <View style={{ flex: 1, padding: 24 }}>
-      {isLoading ? (
-        <ActivityIndicator />
-      ) : (
-        <FlatList
-          data={data}
-          keyExtractor={({ id }, index) => id}
-          renderItem={({ item }) => <Text>{item}</Text>}
-        />
-      )}
-    </View>
-  );
+    let resp = fetch(manufacturedurl);
+    let respJson = resp.json();
+    console.warn(respJson);
+    console.log(respJson);
+  }
+
+  render() {
+    apiCall();
+    return (
+      <View>
+        <Text style={{ alignItems: "center" }}>"Dispay"</Text>
+      </View>
+    );
+  }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});
