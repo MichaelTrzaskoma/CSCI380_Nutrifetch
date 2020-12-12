@@ -25,18 +25,17 @@ upc = '688267000263'
 
 #Dictionary for daily values, current numbers as place holders, not actual values
 dailyVal = {
-    'fat' : 1,
-    'saturated-fat' : 2,
-    'cholesterol' : 3,
-    'sodium': 4,
-    'carbohydrates' : 5,
-    'fiber' : 6,
-    'vitamin-d' : 7,
-    'calcium' : 8,
-    'iron' : 9,
-    'potassium' : 10, 
+    'fat' : 78,
+    'saturated-fat' : 20,
+    'cholesterol' : 300,
+    'sodium': 2300,
+    'carbohydrates' : 275,
+    'fiber' : 28,
+    'vitamin-d' : 20,
+    'calcium' : 1300,
+    'iron' : 18,
+    'potassium' : 4700, 
 }
-
 
 
 #Checks if the upc exists or not
@@ -100,7 +99,7 @@ def upcNutrition(upc):
     nutriRef = genProductDict['nutriments']
     
     #Calories
-    productInformation.append(nutriRef['energy-kcal'])
+    productInformation.append(nutriRef['energy-kcal_serving'])
 
     #Current nutrients list
     nutritionFields = ['fat', 
@@ -129,21 +128,31 @@ def upcNutrition(upc):
         fieldStats = []
         fieldStats.append(field)
         endStr = '_serving'
+        
+        #Check if there's a per serving
         if field+endStr not in nutriRef:
             endStr = ''
+            
+        #Check if field exists in json   
         if field in nutriRef:
             num = nutriRef[field + endStr] 
             unit = nutriRef[field + '_unit']
-            value = str(num) + str(unit)
+            
+            #Modify to represent in terms of mg
+            if unit == 'mg':
+                num *= 1000
+            value = str(round(num,2)) + str(unit)
             fieldStats.append(value)
+            
+            #Check for daily value
             if field in noDaily:
                 percent = ''
             else:
-                percent = (float(num)/dailyVal[field])*100
+                percent = round(((float(num)/dailyVal[field])*100),2)
                 percent = str(percent) + '%'
             fieldStats.append(percent)
             productInformation.append(fieldStats)
-
+            
         else:
             fieldStats.append('')
             fieldStats.append('')
