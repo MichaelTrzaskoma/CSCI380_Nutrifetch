@@ -7,11 +7,10 @@ from firebase_admin import firestore
 import urllib ,json
 from urllib.request import urlopen
 
-<<<<<<< HEAD:backend/Nutrifetch.py
 upc = '044000032029'
 # upc = '044000000615'
 # upc = '688267000263'
-=======
+
 from datetime import date
 
 #Firestore initialization
@@ -19,14 +18,6 @@ cred = credentials.Certificate("nutrifetchtest-firebase-adminsdk-ec3t6-e6a21b3a6
 firebase_admin.initialize_app(cred)
 db = firestore.client()
 user_ref =db.collection("Users")
-
-
-
-
-#upc = '044000032029'
-#upc = '044000000615'
-upc = '688267000263'
->>>>>>> 0a6cbd7cc2ad04cc2b38e44a07266b51bbd2f62d:backend/Nutrifetch Backend.py
 
 
 #Dictionary for daily values, current numbers as place holders, not actual values
@@ -175,7 +166,7 @@ for item in upcNutrition(upc):
     print("%s \n==" % item)
 
 #Test of upcNutrition, should return string of information
-print(upcNutrition(upc))
+# print(upcNutrition(upc))
 
 
 #fields for profile, email, name? fire and last?, age, sex, weight
