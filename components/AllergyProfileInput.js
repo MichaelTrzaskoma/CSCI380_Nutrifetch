@@ -5,45 +5,98 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
+  Alert,
 } from "react-native";
 import MultiSelect from "react-native-multiple-select";
 
 const items = [
   {
     id: "92iijs7yta",
-    name: "Ondo",
+    name: "Balsam of Peru",
   },
   {
     id: "a0s0a8ssbsd",
-    name: "Ogun",
+    name: "Buckwheat",
   },
   {
     id: "16hbajsabsd",
-    name: "Calabar",
+    name: "Celery",
   },
   {
     id: "nahs75a5sg",
-    name: "Lagos",
+    name: "Egg",
   },
   {
     id: "667atsas",
-    name: "Maiduguri",
+    name: "Fish",
   },
   {
     id: "hsyasajs",
-    name: "Anambra",
+    name: "Fruit",
   },
   {
     id: "djsjudksjd",
-    name: "Benue",
+    name: "Garlic",
   },
   {
     id: "sdhyaysdj",
-    name: "Kaduna",
+    name: "Hot Peppers",
   },
   {
     id: "suudydjsjd",
-    name: "Abuja",
+    name: "Oats",
+  },
+  {
+    id: "fgdhgfhddf",
+    name: "Maize",
+  },
+  {
+    id: "lljjgftfds",
+    name: "Milk",
+  },
+  {
+    id: "jjgfdtrsaa",
+    name: "Peanut",
+  },
+  {
+    id: "gfhrtefgbf",
+    name: "Poultry Meat",
+  },
+  {
+    id: "tr53gfh67s",
+    name: "Red Meat",
+  },
+  {
+    id: "ghdfc53cfh",
+    name: "Rice",
+  },
+  {
+    id: "dsfs341dfv",
+    name: "Sesame",
+  },
+  {
+    id: "sfdbv53fgh",
+    name: "Shellfish",
+  },
+  {
+    id: "nfdssfht4f",
+    name: "Soy",
+  },
+  {
+    id: "4fsd53dgbf",
+    name: "Sulfites",
+  },
+  {
+    id: "dfkgjdfska",
+    name: "Tartrazine",
+  },
+  {
+    id: "345kvcxadf",
+    name: "Tree Nut",
+  },
+  {
+    id: "sjdfdsaf3g",
+    name: "Wheat",
   },
 ];
 
@@ -89,6 +142,29 @@ export default class AllergyProfile extends React.Component {
     this.setState({ selectedItems });
   };
 
+  handleButtonPress() {
+    let URL = "http://18.220.4.110:8080/api/v1/CSCI380/profileInput";
+    fetch(URL, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        allergens: this.state.selectedItems,
+        age: this.state.age,
+        gender: this.state.gender,
+        weight: this.state.weight,
+      }),
+    })
+      .then(function (response) {
+        Alert.alert("Response", response);
+      })
+      .then(function (json) {
+        Alert.alert("JSON", json);
+      });
+    //this.props.navigation.navigate("");
+  }
   render() {
     const { selectedItems } = this.state;
 
@@ -129,7 +205,7 @@ export default class AllergyProfile extends React.Component {
             <Text style={styles.txt_gender}>Gender</Text>
             <TextInput
               onChangeText={this.handleGender}
-              placeholder="Male"
+              placeholder="Gender"
               style={styles.input1}
             ></TextInput>
           </View>
@@ -156,7 +232,7 @@ export default class AllergyProfile extends React.Component {
 
           <TouchableOpacity
             // this will navigate to Zak's recall detail screen
-            onPress={() => props.navigation.navigate("")}
+            onPress={() => this.handleButtonPress()}
             style={styles.button}
           >
             <Text style={styles.submitTxt}>Submit</Text>

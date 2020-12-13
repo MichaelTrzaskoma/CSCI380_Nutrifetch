@@ -20,7 +20,10 @@ def assignProfile():
     # OUTPUT: json format allergy_profile && code 202
     data = request.json
     global allergy_profile
-    allergy_profile = data
+    allergy_profile = request.args['allergens']
+    gender = request.args['gender']
+    age = request.args['age']
+    weight = request.args['weight']
 
     # set the info to FireStore
     response = jsonify(allergy_profile)
