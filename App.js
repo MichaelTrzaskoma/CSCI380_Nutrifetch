@@ -14,6 +14,8 @@ import HomeScreen from "./components/HomeScreen";
 import SearchScreen from "./components/SearchScreen";
 import AccScreen from "./components/AccScreen";
 
+import FDAcall from "./components/FDAcall";
+
 import AllergyProfileInput from "./components/AllergyProfileInput";
 import CameraScanScreen from "./components/CameraScanScreen";
 import AfterUPCscanned from "./components/AfterUPCscanned";
