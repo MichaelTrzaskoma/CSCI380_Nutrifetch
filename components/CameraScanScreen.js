@@ -3,12 +3,20 @@ import { Text, View, StyleSheet, Button } from "react-native";
 import * as Permissions from "expo-permissions";
 
 import { BarCodeScanner } from "expo-barcode-scanner";
+import { useNavigation } from '@react-navigation/native';
+export default function CameraScanScreen(props){
+  const navigation = useNavigation();
 
-export default class CameraScanScreen extends React.Component {
-  state = {
-    hasCameraPermission: null,
-    scanned: false,
-  };
+  return <CameraScan {...props} navigation={navigation}/>;
+}
+class CameraScan extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      hasCameraPermission: null,
+      scanned: false,
+    };
+  }
 
   async componentDidMount() {
     this.getPermissionsAsync();
@@ -17,6 +25,17 @@ export default class CameraScanScreen extends React.Component {
   getPermissionsAsync = async () => {
     const { status } = await Permissions.askAsync(Permissions.CAMERA);
     this.setState({ hasCameraPermission: status === "granted" });
+  };
+
+  handleBarCodeScanned = ({ type, data }) => {
+    // handle the UPC after scanning
+    this.setState({ scanned: true });
+    this.props.navigation.navigate('AfterUPCscanned', {
+      title: "Scan Result",
+      upc: data,
+      // the user profile obj from parent component (home screen)
+      // usr_profile: this.props.route.parames.usr_profile,
+    });
   };
 
   render() {
@@ -50,9 +69,4 @@ export default class CameraScanScreen extends React.Component {
       </View>
     );
   }
-
-  handleBarCodeScanned = ({ type, data }) => {
-    this.setState({ scanned: true });
-    alert(`Bar code with type ${type} and data ${data} has been scanned!`);
-  };
 }

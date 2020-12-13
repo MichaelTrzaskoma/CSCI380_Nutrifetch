@@ -13,8 +13,11 @@ upc = '044000032029'
 
 from datetime import date
 
+import re
+
 #Firestore initialization
-cred = credentials.Certificate("nutrifetchtest-firebase-adminsdk-ec3t6-e6a21b3a6f.json")
+# cred = credentials.Certificate("nutrifetchtest-firebase-adminsdk-ec3t6-e6a21b3a6f.json")
+cred = credentials.Certificate("/home/hui/Desktop/google-service-account_CSCI380.json")
 firebase_admin.initialize_app(cred)
 db = firestore.client()
 user_ref =db.collection("Users")
@@ -48,6 +51,12 @@ def upcCheck(upc):
     if check['status'] == 1:
         return True
     
+
+def trimmer(item):
+    # remove special characters from the ingrdients txt
+    # INPUT: ingrdient
+    # OUPUT: clean ingrdient
+    return re.sub('\W+','', item)
 
     
 #Takes the upc code and returns array of information 
@@ -217,3 +226,4 @@ def allergyCheck(upc, email):
 #productInfo = upcNutrition(upc)
 #userProfile('mtrzask', 'Mike', 'Trz', 'male', 21, '150lbs')
 #addProduct('mtrzask', upc, productInfo[1], productInfo[3])
+# print(allergyCheck(upc, "hchen60@nyit.edu"))

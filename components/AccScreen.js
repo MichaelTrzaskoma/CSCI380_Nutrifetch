@@ -10,16 +10,6 @@ import "react-native-gesture-handler";
 
 import AddAllergy from "./ui/AddAllergy";
 
-function LoginPage(props) {
-  // init landing page for the Google Signin
-  return (
-    <View>
-      <Text style={styles.header}>Sign In With Your Credentials</Text>
-      <Button title="Sign in" onPress={() => props.signIn()} />
-    </View>
-  );
-}
-
 export default function AccScreen({ usr_info }) {
   return (
     <View style={styles.container}>

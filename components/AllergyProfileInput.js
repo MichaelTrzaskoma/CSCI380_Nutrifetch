@@ -53,10 +53,10 @@ export default class AllergyProfile extends React.Component {
     this.state = {
       // set the user account info from navigation
       // I'll handle the navigation pass the props
-      fname: this.props.route.parames.usr_profile.first_name,
-      lname: this.props.route.parames.usr_profile.last_name,
-      email: this.props.route.parames.usr_profile.email,
-      
+      fname: this.props.route.params.usr_profile.first_name,
+      lname: this.props.route.params.usr_profile.last_name,
+      email: this.props.route.params.usr_profile.email,
+
       selectedItems: [],
       gender: "",
       age: 0,
@@ -95,7 +95,7 @@ export default class AllergyProfile extends React.Component {
     return (
       <View style={styles.container}>
         <View style={styles.grp}>
-          <View style={styles.mulSelector}>
+          <View style={styles.selector_grp}>
             <MultiSelect
               hideTags
               items={items}
@@ -105,9 +105,9 @@ export default class AllergyProfile extends React.Component {
               }}
               onSelectedItemsChange={this.onSelectedItemsChange}
               selectedItems={selectedItems}
-              selectText="Pick Items"
+              selectText="Pick Allergy Items"
               searchInputPlaceholderText="Search Items..."
-              onChangeInput={(text) => console.log(text)}
+              // onChangeInput={(text) => console.log(text)}
               tagRemoveIconColor="gray"
               tagBorderColor="gray"
               tagTextColor="gray"
@@ -118,7 +118,6 @@ export default class AllergyProfile extends React.Component {
               searchInputStyle={{ color: "#CCC" }}
               submitButtonColor="#CCC"
               submitButtonText="Submit"
-              // style={this.styles.mulSelector}
             />
             <View>
               {this.multiSelect &&
@@ -156,7 +155,7 @@ export default class AllergyProfile extends React.Component {
           </View>
 
           <TouchableOpacity
-          // this will navigate to Zak's recall detail screen
+            // this will navigate to Zak's recall detail screen
             onPress={() => props.navigation.navigate("")}
             style={styles.button}
           >
@@ -174,16 +173,24 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(230, 230, 230,1)",
   },
   grp: {
-    height: 450,
+    height: 550,
     backgroundColor: "rgba(255,255,255,1)",
     marginTop: 50,
+  },
+  selector_grp: {
+    // margin: 16,
+    width: "93%",
+    height: 50,
+    marginTop: 10,
+    marginLeft: 15,
+    marginBottom: 200,
+    position: "relative",
   },
   input1_grp: {
     width: "93%",
     height: 50,
-    // marginTop: 20,
+    marginTop: 5,
     marginLeft: 10,
-    // top: 5,
     marginBottom: 10,
   },
   txt_gender: {
@@ -209,10 +216,15 @@ const styles = StyleSheet.create({
     marginBottom: 40,
   },
   mulSelector: {
-    flex: 1,
+    // flex: 0.5,
+    // width: "90%",
+    height: 40,
     marginLeft: 10,
     marginTop: 10,
+    marginBottom: 150,
     minWidth: 300,
+    position: "absolute",
+    zIndex: 10,
     // width: "100%"
     // width: "80%",
   },

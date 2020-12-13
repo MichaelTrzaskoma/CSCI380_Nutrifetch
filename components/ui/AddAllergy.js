@@ -5,7 +5,7 @@ import MaterialIconsIcon from "react-native-vector-icons/MaterialIcons";
 import "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
 
-import AllergyProfile from "../AllergyProfileInput";
+import AllergyProfileInput from "../AllergyProfileInput";
 
 export default function AddAllergy() {
   const navigation = useNavigation();
@@ -13,8 +13,8 @@ export default function AddAllergy() {
   return (
     <TouchableOpacity
       onPress={() =>
-        navigation.navigate(AllergyProfile, {
-          title: "Input Required Info",
+        navigation.navigate('AllergyProfileInput', {
+          title: "Add Allergy Profile",
         })
       }
       style={styles.grp2}

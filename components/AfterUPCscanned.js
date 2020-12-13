@@ -8,21 +8,51 @@ export default class AfterScanUpc extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      // email: this.props.route.parames.email,
+      email: this.props.route.params.email,
+      upc: this.props.route.params.upc,
       product: {
         user_allergy: 0,
         prodName: "",
         allergens: "",
         cal: "",
         ingredients: "",
-        nutriVal: [],
       },
+      "fat": [],
+      "staturated_fat": [],
+      "trans_fat": [],
+      "cholesterol": [],
+      "sodium": [],
+      "carbohydrates": [],
+      "fiber": [],
+      "sugars": [],
+      "protiens": [],
+      "vitamin_d": [],
+      "calcium": [],
+      "iron": [],
+      "potassium": [],
       recall: true,
     };
   }
 
+  componentDidMount(){
+    this.getAllergyInfo();
+  }
+
+  parseVal(arr){
+    // parset the nutrition unit and daily val
+    if (arr[1] == null | arr[2] == ""){
+      arr[1] = 0
+    }
+    if (arr[2] == null | arr[2] == ""){
+      arr[2] = 0
+    }
+    return arr;
+  }
+
   getAllergyInfo = () => {
-    fetch("http://3.21.169.238/api/v1/CSCI380/getUPCinfo", {
+    // console.log("Get info fetch func called");
+    let URL = "http://18.220.4.110:8080/api/v1/CSCI380/getUPCinfo?email=" + this.state.email + "&upc=" + this.state.upc;
+    fetch(URL, {
       method: "GET",
       headers: {
         Accept: "application/json",
@@ -31,7 +61,32 @@ export default class AfterScanUpc extends React.Component {
     })
       .then((response) => response.json())
       .then((json) => {
-        console.log(json);
+        this.setState({
+          // set the product obj
+          product: {
+            user_allergy: json[17],
+            prodName: json[0],
+            allergens: json[2],
+            cal: json[3],
+            ingredients: json[1],
+          },
+
+          // set each nutrition val
+          "fat": this.parseVal(json[4]),
+          "staturated_fat": this.parseVal(json[5]),
+          "trans_fat": this.parseVal(json[6]),
+          "cholesterol": this.parseVal(json[7]),
+          "sodium": this.parseVal(json[8]),
+          "carbohydrates": this.parseVal(json[9]),
+          "fiber": this.parseVal(json[10]),
+          "sugars": this.parseVal(json[11]),
+          "protiens": this.parseVal(json[12]),
+          "vitamin_d": this.parseVal(json[13]),
+          "calcium": this.parseVal(json[14]),
+          "iron": this.parseVal(json[15]),
+          "potassium": this.parseVal(json[16]),
+        });
+        // console.log(json);
       })
       .catch((error) => {
         console.log("An error occured due to: " + error);
@@ -101,6 +156,7 @@ export default class AfterScanUpc extends React.Component {
   };
 
   render() {
+    // console.log(this.props);
     return (
       <View style={styles.container}>
         <ScrollView>
@@ -143,16 +199,16 @@ export default class AfterScanUpc extends React.Component {
               <View style={styles.productNameGrpStack}>
                 <View style={styles.productNameGrp}>
                   <Text style={styles.productName}>Product Name:</Text>
-                  <Text style={styles.txtProductName}>dfeaw{"\n"}sgfe</Text>
+                  <Text style={styles.txtProductName}>{this.state.product.prodName}</Text>
                 </View>
                 <View style={styles.allgeryGrp}>
                   <Text style={styles.allergens}>Allergens:</Text>
-                  <Text style={styles.txtAllergens}>dfeaw{"\n"}sgfe</Text>
+                  <Text style={styles.txtAllergens}>{this.state.product.allergens}</Text>
                 </View>
                 <View style={styles.calGrp}>
                   <View style={styles.caloriesRow}>
                     <Text style={styles.calories}>Calories:</Text>
-                    <Text style={styles.dfea2}>dfea</Text>
+                    <Text style={styles.dfea2}>{this.state.product.cal}</Text>
                   </View>
                 </View>
               </View>
@@ -160,7 +216,7 @@ export default class AfterScanUpc extends React.Component {
                 <View style={styles.ingredientsGrp}>
                   <Text style={styles.ingredients}>Ingredients:</Text>
                   <View style={styles.rect2}>
-                    <Text style={styles.txtIngrdient}>Here</Text>
+                    <Text style={styles.txtIngrdient}>{this.state.product.ingredients}</Text>
                   </View>
                 </View>
                 <View style={styles.nutriValeGrp}>
@@ -173,39 +229,81 @@ export default class AfterScanUpc extends React.Component {
                     </DataTable.Header>
 
                     <DataTable.Row>
-                      <DataTable.Cell>Frozen yogurt</DataTable.Cell>
-                      <DataTable.Cell numeric>159</DataTable.Cell>
-                      <DataTable.Cell numeric>6.0</DataTable.Cell>
+                      <DataTable.Cell>{this.state.fat[0]}</DataTable.Cell>
+                      <DataTable.Cell numeric>{this.state.fat[1]}</DataTable.Cell>
+                      <DataTable.Cell numeric>{this.state.fat[2]}</DataTable.Cell>
                     </DataTable.Row>
 
                     <DataTable.Row>
-                      <DataTable.Cell>Ice cream sandwich</DataTable.Cell>
-                      <DataTable.Cell numeric>237</DataTable.Cell>
-                      <DataTable.Cell numeric>8.0</DataTable.Cell>
+                      <DataTable.Cell>{this.state.staturated_fat[0]}</DataTable.Cell>
+                      <DataTable.Cell numeric>{this.state.staturated_fat[1]}</DataTable.Cell>
+                      <DataTable.Cell numeric>{this.state.staturated_fat[2]}</DataTable.Cell>
                     </DataTable.Row>
 
                     <DataTable.Row>
-                      <DataTable.Cell>wegwesandwich</DataTable.Cell>
-                      <DataTable.Cell numeric>237</DataTable.Cell>
-                      <DataTable.Cell numeric>8.0</DataTable.Cell>
+                      <DataTable.Cell>{this.state.trans_fat[0]}</DataTable.Cell>
+                      <DataTable.Cell numeric>{this.state.trans_fat[1]}</DataTable.Cell>
+                      <DataTable.Cell numeric>{this.state.trans_fat[2]}</DataTable.Cell>
                     </DataTable.Row>
 
                     <DataTable.Row>
-                      <DataTable.Cell>Igtrswich</DataTable.Cell>
-                      <DataTable.Cell numeric>237</DataTable.Cell>
-                      <DataTable.Cell numeric>8.0</DataTable.Cell>
+                      <DataTable.Cell>{this.state.cholesterol[0]}</DataTable.Cell>
+                      <DataTable.Cell numeric>{this.state.cholesterol[1]}</DataTable.Cell>
+                      <DataTable.Cell numeric>{this.state.cholesterol[2]}</DataTable.Cell>
                     </DataTable.Row>
 
                     <DataTable.Row>
-                      <DataTable.Cell>23rdawfdwich</DataTable.Cell>
-                      <DataTable.Cell numeric>237</DataTable.Cell>
-                      <DataTable.Cell numeric>8.0</DataTable.Cell>
+                      <DataTable.Cell>{this.state.sodium[0]}</DataTable.Cell>
+                      <DataTable.Cell numeric>{this.state.sodium[1]}</DataTable.Cell>
+                      <DataTable.Cell numeric>{this.state.sodium[2]}</DataTable.Cell>
                     </DataTable.Row>
 
                     <DataTable.Row>
-                      <DataTable.Cell>fagerwich</DataTable.Cell>
-                      <DataTable.Cell numeric>237</DataTable.Cell>
-                      <DataTable.Cell numeric>8.0</DataTable.Cell>
+                      <DataTable.Cell>{this.state.carbohydrates[0]}</DataTable.Cell>
+                      <DataTable.Cell numeric>{this.state.carbohydrates[1]}</DataTable.Cell>
+                      <DataTable.Cell numeric>{this.state.carbohydrates[2]}</DataTable.Cell>
+                    </DataTable.Row>
+
+                    <DataTable.Row>
+                      <DataTable.Cell>{this.state.fiber[0]}</DataTable.Cell>
+                      <DataTable.Cell numeric>{this.state.fiber[1]}</DataTable.Cell>
+                      <DataTable.Cell numeric>{this.state.fiber[2]}</DataTable.Cell>
+                    </DataTable.Row>
+                    
+                    <DataTable.Row>
+                      <DataTable.Cell>{this.state.sugars[0]}</DataTable.Cell>
+                      <DataTable.Cell numeric>{this.state.sugars[1]}</DataTable.Cell>
+                      <DataTable.Cell numeric>{this.state.sugars[2]}</DataTable.Cell>
+                    </DataTable.Row>
+                    
+                    <DataTable.Row>
+                      <DataTable.Cell>{this.state.protiens[0]}</DataTable.Cell>
+                      <DataTable.Cell numeric>{this.state.protiens[1]}</DataTable.Cell>
+                      <DataTable.Cell numeric>{this.state.protiens[2]}</DataTable.Cell>
+                    </DataTable.Row>
+                    
+                    <DataTable.Row>
+                      <DataTable.Cell>{this.state.vitamin_d[0]}</DataTable.Cell>
+                      <DataTable.Cell numeric>{this.state.vitamin_d[1]}</DataTable.Cell>
+                      <DataTable.Cell numeric>{this.state.vitamin_d[2]}</DataTable.Cell>
+                    </DataTable.Row>
+                    
+                    <DataTable.Row>
+                      <DataTable.Cell>{this.state.calcium[0]}</DataTable.Cell>
+                      <DataTable.Cell numeric>{this.state.calcium[1]}</DataTable.Cell>
+                      <DataTable.Cell numeric>{this.state.calcium[2]}</DataTable.Cell>
+                    </DataTable.Row>
+                    
+                    <DataTable.Row>
+                      <DataTable.Cell>{this.state.iron[0]}</DataTable.Cell>
+                      <DataTable.Cell numeric>{this.state.iron[1]}</DataTable.Cell>
+                      <DataTable.Cell numeric>{this.state.iron[2]}</DataTable.Cell>
+                    </DataTable.Row>
+                    
+                    <DataTable.Row>
+                      <DataTable.Cell>{this.state.potassium[0]}</DataTable.Cell>
+                      <DataTable.Cell numeric>{this.state.potassium[1]}</DataTable.Cell>
+                      <DataTable.Cell numeric>{this.state.potassium[2]}</DataTable.Cell>
                     </DataTable.Row>
                   </DataTable>
                 </View>
@@ -312,7 +410,7 @@ const styles = StyleSheet.create({
   },
   cardGrp2: {
     width: "94%",
-    height: 1000,
+    height: 1080,
     backgroundColor: "rgba(255,255,255,1)",
     borderWidth: 0,
     borderColor: "#000000",
@@ -432,7 +530,7 @@ const styles = StyleSheet.create({
   },
   rect2: {
     width: 289,
-    height: 97,
+    height: 100,
     backgroundColor: "rgba(255,255,255,1)",
     marginTop: 3,
     marginLeft: 23,

@@ -14,7 +14,7 @@ import HomeScreen from "./components/HomeScreen";
 import SearchScreen from "./components/SearchScreen";
 import AccScreen from "./components/AccScreen";
 
-import AllergyProfile from "./components/AllergyProfileInput";
+import AllergyProfileInput from "./components/AllergyProfileInput";
 import CameraScanScreen from "./components/CameraScanScreen";
 import AfterUPCscanned from "./components/AfterUPCscanned";
 
@@ -89,7 +89,7 @@ export default class App extends Component {
       },
       upcPlaceholder: "6 79948 10006 8",
       productNamePlaceholder: "Nature's Earthly Choice Organic Lentil Trio",
-      safePnamePlaceholder: "Nature\'s Earthly Choice Organic Lentil Trio",
+      safePnamePlaceholder: "Nature's Earthly Choice Organic Lentil Trio",
     };
   }
 
@@ -123,10 +123,13 @@ export default class App extends Component {
   };
 
   recall = () => {
-    let URL = "https://api.fda.gov/food/enforcement.json?api_key=ioNI0UpkgYZ0KxjlPukkrx4rf9wkYYPTqNMnYQA7&search=openfda.upc.exact: "
-    + this.state.upcPlaceholder + " +AND+product_description: \""  +
-    this.state.safePnamePlaceholder +
-    '" &limit=1000';
+    // test func
+    let URL =
+      "https://api.fda.gov/food/enforcement.json?api_key=ioNI0UpkgYZ0KxjlPukkrx4rf9wkYYPTqNMnYQA7&search=openfda.upc.exact: " +
+      this.state.upcPlaceholder +
+      ' +AND+product_description: "' +
+      this.state.safePnamePlaceholder +
+      '" &limit=1000';
 
     fetch(URL, {
       method: "GET",
@@ -134,43 +137,57 @@ export default class App extends Component {
         Accept: "application/json",
         "Content-Type": "application/json",
       },
-    }).then((response) => response.json())
-    .then((json) => {
-      console.log(json);
     })
-    .catch((error) => {
-      console.log(error);
-    });
+      .then((response) => response.json())
+      .then((json) => {
+        console.log(json);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   render() {
     // this.recall();
-    // if (this.state.usrProfile.signedIn) {
+    if (this.state.usrProfile.signedIn) {
       return (
         <NavigationContainer>
           <Stack.Navigator>
             <Stack.Screen name={"Home"}>
               {() => <TabScreens usr={this.state.usrProfile} />}
             </Stack.Screen>
-            <Stack.Screen name={"AllergyProfile"} component={AllergyProfile} />
+
+            <Stack.Screen
+              name={"AllergyProfileInput"}
+              component={AllergyProfileInput}
+              // pass the user obj directly to the screen
+              initialParams={{ usr_profile: this.state.usrProfile }}
+              // let the parent screen decide what this child component title should be
+              options={({ route }) => ({ title: route.params.title })}
+            />
+
             <Stack.Screen
               name={"CameraScanScreen"}
               component={CameraScanScreen}
+              options={({ route }) => ({ title: route.params.title })}
             />
+
             <Stack.Screen
               name={"AfterUPCscanned"}
               component={AfterUPCscanned}
+              options={({ route }) => ({ title: route.params.title })}
+              initialParams={{email: this.state.usrProfile.email}}
             />
           </Stack.Navigator>
         </NavigationContainer>
       );
-    // } else {
-    //   return (
-    //     <View style={styles.container}>
-    //       <LoginPage signIn={this.signIn} />
-    //     </View>
-    //   );
-    // }
+    } else {
+      return (
+        <View style={styles.container}>
+          <LoginPage signIn={this.signIn} />
+        </View>
+      );
+    }
   }
 }
 
