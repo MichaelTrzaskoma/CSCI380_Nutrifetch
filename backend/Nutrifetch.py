@@ -98,8 +98,19 @@ def upcNutrition(upc):
 
     #Name, ingredients, allergends
     productInformation.append(genProductDict['product_name'])
-    productInformation.append(genProductDict['ingredients_text'])
-    productInformation.append(genProductDict['allergens_from_ingredients'])
+    
+    ingredientsList = []
+    for i in range(len(genProductDict['ingredients_original_tags'])):
+        if genProductDict['ingredients_original_tags'][i][3] != 'e':
+            ingredientsList.append(genProductDict['ingredients_original_tags'][i][3:])
+    productInformation.append(ingredientsList)
+
+    allergenList = []
+    for i in range(len(genProductDict['allergens_tags'])):
+        if genProductDict['allergens_tags'][i][3] != 'e':
+            allergenList.append(genProductDict['allergens_tags'][i][3:])
+    productInformation.append(allergenList)
+
     
     #Dictionary ref for nutrition info of product
     nutriRef = genProductDict['nutriments']
