@@ -180,6 +180,12 @@ export default class App extends Component {
               options={({ route }) => ({ title: route.params.title })}
               initialParams={{email: this.state.usrProfile.email}}
             />
+
+            <Stack.Screen
+              name={"FDAcall"}
+              component={FDAcall}
+              options={({ route }) => ({ title: route.params.title })}
+            />
           </Stack.Navigator>
         </NavigationContainer>
       );
