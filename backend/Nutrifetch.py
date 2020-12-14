@@ -101,13 +101,13 @@ def upcNutrition(upc):
     
     ingredientsList = []
     for i in range(len(genProductDict['ingredients_original_tags'])):
-        if genProductDict['ingredients_original_tags'][i][3] != 'e':
+        if(hasNumbers(genProductDict['ingredients_original_tags'][i])) == False:
             ingredientsList.append(genProductDict['ingredients_original_tags'][i][3:])
     productInformation.append(ingredientsList)
 
     allergenList = []
     for i in range(len(genProductDict['allergens_tags'])):
-        if genProductDict['allergens_tags'][i][3] != 'e':
+        if(hasNumbers(genProductDict['allergens_tags'][i])) == False:
             allergenList.append(genProductDict['allergens_tags'][i][3:])
     productInformation.append(allergenList)
 
@@ -188,6 +188,8 @@ for item in upcNutrition(upc):
 #Test of upcNutrition, should return string of information
 # print(upcNutrition(upc))
 
+def hasNumbers(inputString):
+    return any(char.isdigit() for char in inputString)
 
 #fields for profile, email, name? fire and last?, age, sex, weight
 def userProfile(userEmail, nameF, nameL, sex, age, weight, userallergens = []):
