@@ -109,7 +109,6 @@ export default class AllergyProfile extends React.Component {
       fname: this.props.route.params.usr_profile.first_name,
       lname: this.props.route.params.usr_profile.last_name,
       email: this.props.route.params.usr_profile.email,
-
       selectedItems: [],
       gender: "",
       age: 0,
@@ -151,23 +150,32 @@ export default class AllergyProfile extends React.Component {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
+        email: this.state.email,
+        fname: this.state.fname,
+        lname: this.state.lname,
         allergens: this.state.selectedItems,
         age: this.state.age,
         gender: this.state.gender,
         weight: this.state.weight,
       }),
     })
-      .then(function (response) {
-        Alert.alert("Response", response);
+      .then((response) => {
+        if((response.status == 202)){
+          Alert.alert("Your profile has successfully \nuploaded to the server!");
+
+          setTimeout(() => {
+            this.props.navigation.goBack();
+          }, 2500);
+
+        }
       })
-      .then(function (json) {
-        Alert.alert("JSON", json);
+      .catch((error) => {
+        console.log("Error due to: " + error);
       });
     //this.props.navigation.navigate("");
   }
   render() {
     const { selectedItems } = this.state;
-
     return (
       <View style={styles.container}>
         <View style={styles.grp}>
@@ -175,7 +183,7 @@ export default class AllergyProfile extends React.Component {
             <MultiSelect
               hideTags
               items={items}
-              uniqueKey="id"
+              uniqueKey="name"
               ref={(component) => {
                 this.multiSelect = component;
               }}

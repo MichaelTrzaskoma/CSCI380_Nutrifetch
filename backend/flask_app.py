@@ -12,6 +12,8 @@ allergy_profile = {
     'Allergy': [],
 }
 
+profileInput = {}
+
 
 @app.route('/api/v1/CSCI380/profileInput', methods=['POST'])
 def assignProfile():
@@ -20,14 +22,27 @@ def assignProfile():
     # OUTPUT: json format allergy_profile && code 202
     data = request.json
     global allergy_profile
-    allergy_profile = request.args['allergens']
-    gender = request.args['gender']
-    age = request.args['age']
-    weight = request.args['weight']
 
-    # set the info to FireStore
-    response = jsonify(allergy_profile)
-    response.status_code = 202
+    response = ""
+
+    if data['email'] != "":
+        email = data['email']
+        first_name = data['fname']
+        last_name = data['lname']
+        gender = data['gender']
+        age = data['age']
+        weight = data['weight']
+        allergy_profile = data['allergens']
+
+        profileInput[email] = (first_name, last_name, gender, age, weight, allergy_profile)
+
+        userProfile(email, first_name, last_name, gender, age, weight, userallergens=allergy_profile)
+        # set the info to FireStore
+        response = jsonify("Data captured!")
+        response.status_code = 202
+    else:
+        response = jsonify("An error occured!")
+        response.status_code = 500
     return response
 
 
@@ -48,7 +63,7 @@ def getUPCinfo():
         response = jsonify(nutrition)
         response.status_code = 202
     else:
-        response = "Error code: AX002"
+        response = jsonify("Error code: AX002")
         response.status_code = 500
 
     return response
