@@ -7,7 +7,8 @@ from firebase_admin import firestore
 import urllib ,json
 from urllib.request import urlopen
 
-upc = '044000032029'
+upc = '4005500049623'
+# upc = '044000032029'
 # upc = '044000000615'
 # upc = '688267000263'
 
@@ -178,15 +179,6 @@ def upcNutrition(upc):
 
     return productInformation
 
-#Test of upcNutrition, should return string of information 
-# print(upcNutrition(upc))
-
-# test output
-for item in upcNutrition(upc):
-    print("%s \n==" % item)
-
-#Test of upcNutrition, should return string of information
-# print(upcNutrition(upc))
 
 def hasNumbers(inputString):
     return any(char.isdigit() for char in inputString)
@@ -229,10 +221,11 @@ def allergyCheck(upc, email):
         return '2'
     nutritionInfo = upcNutrition(upc)
     allergensStr = nutritionInfo[2]
-    allergensList = allergensStr.split(', ')
+    # we can't use split() in a list
+    # allergensList = allergensStr.split(', ')
     userAllergies = userProfile.to_dict().get('Allergies')
     for i in range(len(userAllergies)):
-        if userAllergies[i] in allergensList:
+        if userAllergies[i] in allergensStr:
             return '1'
     return '0'
 #Testing firestore inputs 
@@ -240,3 +233,16 @@ def allergyCheck(upc, email):
 #userProfile('mtrzask', 'Mike', 'Trz', 'male', 21, '150lbs')
 #addProduct('mtrzask', upc, productInfo[1], productInfo[3])
 # print(allergyCheck(upc, "hchen60@nyit.edu"))
+
+
+
+#Test of upcNutrition, should return string of information 
+# print(upcNutrition(upc))
+
+#Test of upcNutrition, should return string of information
+# print(upcNutrition(upc))
+
+
+# test output
+for item in upcNutrition(upc):
+    print("%s \n==" % item)

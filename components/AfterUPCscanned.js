@@ -127,6 +127,16 @@ export default class AfterScanUpc extends React.Component {
     })
       .then((response) => response.json())
       .then((json) => {
+        const arr = json[1];
+        let temp = "";
+
+        arr.forEach((res) => {
+          temp += res + ", ";
+        });
+
+        // trim the last common
+        temp = temp.substring(0, (temp.length - 2));
+
         this.setState({
           // set the product obj
           product: {
@@ -134,7 +144,7 @@ export default class AfterScanUpc extends React.Component {
             prodName: json[0],
             allergens: json[2],
             cal: json[3],
-            ingredients: json[1],
+            ingredients: temp,
           },
 
           // set each nutrition val
