@@ -9,10 +9,14 @@ import {
 import MaterialCommunityIconsIcon from "react-native-vector-icons/MaterialCommunityIcons";
 import IoniconsIcon from "react-native-vector-icons/Ionicons";
 
+
 export default function HomeScreen({ navigation }) {
   return (
+    
     <View style={styles.container}>
+      
       <StatusBar hidden />
+     
       <TouchableOpacity
         onPress={() =>
           navigation.navigate("CameraScanScreen", {
@@ -34,6 +38,10 @@ export default function HomeScreen({ navigation }) {
           style={styles.icon2}
         ></IoniconsIcon>
       </TouchableOpacity>
+      
+       
+    
+    
     </View>
   );
 }
