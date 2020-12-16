@@ -2,7 +2,7 @@ import { StatusBar } from "expo-status-bar";
 import React from "react";
 import { StyleSheet, Text, View, FlatList } from "react-native";
 
-console.disableYellowBox = true;
+// console.disableYellowBox = true;
 
 function NoRecallView() {
   return (

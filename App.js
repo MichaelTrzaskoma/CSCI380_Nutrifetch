@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { StyleSheet, Text, View, Button, ImageBackground, } from "react-native";
+import { StyleSheet, Text, View, Button, ImageBackground } from "react-native";
 import { AppRegistry } from "react-native";
 import "react-native-gesture-handler";
 import * as Google from "expo-google-app-auth";
@@ -15,13 +15,14 @@ import SearchScreen from "./components/SearchScreen";
 import AccScreen from "./components/AccScreen";
 
 import FDAcall from "./components/FDAcall";
-
 import AllergyProfileInput from "./components/AllergyProfileInput";
 import CameraScanScreen from "./components/CameraScanScreen";
 import AfterUPCscanned from "./components/AfterUPCscanned";
 
-const backImg = {uri : "https://images.pexels.com/photos/255501/pexels-photo-255501.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"};
-
+const backImg = {
+  uri:
+    "https://images.pexels.com/photos/255501/pexels-photo-255501.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
+};
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -30,17 +31,23 @@ function LoginPage(props) {
   // init landing page for the Google Signin
   return (
     <View>
-    <ImageBackground source = {backImg} style = {styles.image}>
-      <View style = {{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-        <Text style={styles.title}>NutriFetch</Text>
-        <Text style = {styles.subtitle}> A Team MHz Collaboration</Text>
-        <Text style={styles.header}>Login with Google to Continue!</Text>
-        <View style = {{marginLeft: 200,}}>
-        <Button color = "white" title= "Sign in" onPress={() => props.signIn()} />
+      <ImageBackground source={backImg} style={styles.image}>
+        <View
+          style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
+        >
+          <Text style={styles.title}>NutriFetch</Text>
+          <Text style={styles.subtitle}> A Team MHz Collaboration</Text>
+          <Text style={styles.header}>Login with Google to Continue!</Text>
+          <View style={{ marginLeft: 200 }}>
+            <Button
+              // color="white"
+              title="Sign in"
+              onPress={() => props.signIn()}
+            />
+          </View>
         </View>
-      </View>
-    </ImageBackground>   
-  </View>
+      </ImageBackground>
+    </View>
   );
 }
 
@@ -111,8 +118,9 @@ export default class App extends Component {
       const result = await Google.logInAsync({
         androidClientId:
           "117030962609-9mblopptuccmm9fqhi2uv7eeea9bk1vh.apps.googleusercontent.com",
-         iosClientId: "117030962609-taq9vsss462r8gsnduti8d5c2t314rdv.apps.googleusercontent.com",
-         scopes: ["profile", "email"],
+        iosClientId:
+          "117030962609-taq9vsss462r8gsnduti8d5c2t314rdv.apps.googleusercontent.com",
+        scopes: ["profile", "email"],
       });
 
       if (result.type === "success") {
@@ -189,7 +197,7 @@ export default class App extends Component {
               name={"AfterUPCscanned"}
               component={AfterUPCscanned}
               options={({ route }) => ({ title: route.params.title })}
-              initialParams={{email: this.state.usrProfile.email}}
+              initialParams={{ email: this.state.usrProfile.email }}
             />
 
             <Stack.Screen
@@ -218,32 +226,29 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  title : {
-    color: "white", 
-    fontSize : 40, 
-    marginLeft : 200, 
+  title: {
+    color: "white",
+    fontSize: 40,
+    marginLeft: 200,
     marginTop: -50,
-},
-subtitle: {
-  color: "white",
-  fontSize: 12,
-  marginLeft: 200,
-  marginTop: 10,
+  },
+  subtitle: {
+    color: "white",
+    fontSize: 12,
+    marginLeft: 200,
+    marginTop: 10,
+  },
 
-},
-
-  
   header: {
     fontSize: 14,
-    color : "white",
+    color: "white",
     marginLeft: 200,
-    marginTop : 100,
-    
+    marginTop: 100,
   },
   image: {
     height: 767,
     width: 793,
-    marginLeft : -195,
-    marginTop: -8,  
+    marginLeft: -195,
+    marginTop: -8,
   },
 });

@@ -7,7 +7,7 @@ Contributors: Michael Trzaskoma, Gregory Salvesen, Zakaria Khan, and Hui (Henry)
 <br>
 
 ## Demo
-* <a href="https://youtu.be/YEDaezGOrJU">Quick Demo</a>
+* <a href="https://youtu.be/-fH4zXp7BbU">Quick Demo</a>
 
 <br>
 

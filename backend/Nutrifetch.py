@@ -225,14 +225,14 @@ def allergyCheck(upc, email):
     # allergensList = allergensStr.split(', ')
     userAllergies = userProfile.to_dict().get('Allergies')
     for i in range(len(userAllergies)):
-        if userAllergies[i] in allergensStr:
+        if userAllergies[i].lower() in allergensStr:
             return '1'
     return '0'
 #Testing firestore inputs 
 #productInfo = upcNutrition(upc)
 #userProfile('mtrzask', 'Mike', 'Trz', 'male', 21, '150lbs')
 #addProduct('mtrzask', upc, productInfo[1], productInfo[3])
-# print(allergyCheck(upc, "hchen60@nyit.edu"))
+print(allergyCheck(upc, "hchen60@nyit.edu"))
 
 
 
@@ -244,5 +244,5 @@ def allergyCheck(upc, email):
 
 
 # test output
-for item in upcNutrition(upc):
-    print("%s \n==" % item)
+# for item in upcNutrition(upc):
+#     print("%s \n==" % item)

@@ -38,6 +38,7 @@ export default class AfterScanUpc extends React.Component {
       potassium: [],
       recall: true,
       isLoading: true,
+      isValideUPC: false,
     };
   }
 
@@ -127,43 +128,57 @@ export default class AfterScanUpc extends React.Component {
     })
       .then((response) => response.json())
       .then((json) => {
-        const arr = json[1];
-        let temp = "";
+        if (json == "product not found") {
+        // if (json.status == 404) {
+          this.setState({
+            isLoading: false,
+          });
+        } else {
+          const arr = json[1];
+          const arr2 = json[2];
+          let temp = "";
+          let temp2 = "";
 
-        arr.forEach((res) => {
-          temp += res + ", ";
-        });
+          arr.forEach((res) => {
+            temp += res + ", ";
+          });
 
-        // trim the last common
-        temp = temp.substring(0, (temp.length - 2));
+          arr2.forEach((res) => {
+            temp2 += res + ", ";
+          });
 
-        this.setState({
-          // set the product obj
-          product: {
-            user_allergy: json[17],
-            prodName: json[0],
-            allergens: json[2],
-            cal: json[3],
-            ingredients: temp,
-          },
+          // trim the last common
+          temp = temp.substring(0, temp.length - 2);
+          temp2 = temp2.substring(0, temp2.length - 2);
+          console.log(json);
+          this.setState({
+            // set the product obj
+            product: {
+              user_allergy: json[17],
+              prodName: json[0],
+              allergens: temp2,
+              cal: json[3],
+              ingredients: temp,
+            },
 
-          // set each nutrition val
-          fat: this.parseVal(json[4]),
-          staturated_fat: this.parseVal(json[5]),
-          trans_fat: this.parseVal(json[6]),
-          cholesterol: this.parseVal(json[7]),
-          sodium: this.parseVal(json[8]),
-          carbohydrates: this.parseVal(json[9]),
-          fiber: this.parseVal(json[10]),
-          sugars: this.parseVal(json[11]),
-          protiens: this.parseVal(json[12]),
-          vitamin_d: this.parseVal(json[13]),
-          calcium: this.parseVal(json[14]),
-          iron: this.parseVal(json[15]),
-          potassium: this.parseVal(json[16]),
-          isLoading: false,
-        });
-        // console.log(json);
+            // set each nutrition val
+            fat: this.parseVal(json[4]),
+            staturated_fat: this.parseVal(json[5]),
+            trans_fat: this.parseVal(json[6]),
+            cholesterol: this.parseVal(json[7]),
+            sodium: this.parseVal(json[8]),
+            carbohydrates: this.parseVal(json[9]),
+            fiber: this.parseVal(json[10]),
+            sugars: this.parseVal(json[11]),
+            protiens: this.parseVal(json[12]),
+            vitamin_d: this.parseVal(json[13]),
+            calcium: this.parseVal(json[14]),
+            iron: this.parseVal(json[15]),
+            potassium: this.parseVal(json[16]),
+            isLoading: false,
+            isValideUPC: true,
+          });
+        }
       })
       .catch((error) => {
         console.log("An error occured due to: " + error);
@@ -237,6 +252,16 @@ export default class AfterScanUpc extends React.Component {
       return (
         <View style={styles.preloader}>
           <ActivityIndicator size="large" color="#9E9E9E" />
+        </View>
+      );
+    }
+
+    if (!this.state.isValideUPC) {
+      return (
+        <View>
+          <Text style={styles.invalidUPC}>
+            Sorry, we don't have a record of this UPC code. This is not a food!
+          </Text>
         </View>
       );
     }
@@ -486,6 +511,11 @@ const styles = StyleSheet.create({
     position: "absolute",
     alignItems: "center",
     justifyContent: "center",
+  },
+  invalidUPC: {
+    marginTop: 100,
+    padding: 100,
+    alignContent: "center",
   },
   cardGrp1: {
     width: "94%",

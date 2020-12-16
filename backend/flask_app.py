@@ -34,9 +34,16 @@ def assignProfile():
         weight = data['weight']
         allergy_profile = data['allergens']
 
-        profileInput[email] = (first_name, last_name, gender, age, weight, allergy_profile)
+        profileInput[email] = (first_name, last_name, gender, age, weight,
+                               allergy_profile)
 
-        userProfile(email, first_name, last_name, gender, age, weight, userallergens=allergy_profile)
+        userProfile(email,
+                    first_name,
+                    last_name,
+                    gender,
+                    age,
+                    weight,
+                    userallergens=allergy_profile)
         # set the info to FireStore
         response = jsonify("Data captured!")
         response.status_code = 202
@@ -58,10 +65,17 @@ def getUPCinfo():
         upc = request.args['upc']
         email = request.args['email']
 
-        nutrition = upcNutrition(upc)
-        # allergy_status = 
-        response = jsonify(nutrition)
-        response.status_code = 202
+        if upcCheck(upc):
+            nutrition = upcNutrition(upc)
+            nutrition.append(allergyCheck(upc, email))
+            response = jsonify(nutrition)
+            # response.allery = allergyCheck(upc, email)
+            response.status_code = 202
+        else:
+            response = "product not found"
+            response = jsonify(response)
+            response.status_code = 404
+
     else:
         response = jsonify("Error code: AX002")
         response.status_code = 500
